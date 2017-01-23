@@ -4,7 +4,7 @@ from contextlib import contextmanager
 import pifacecad
 import time
 
-from poller import poll_pi
+from pollers import poll_pi, ButtonPoller
 from collector import SysValues
 
 cad = pifacecad.PiFaceCAD()
@@ -35,13 +35,17 @@ def display_manager():
     cad.lcd.display_off()
 
 def main():
-    hosts = get_hosts(HOSTS_FILE)
+    all_hosts = get_hosts(HOSTS_FILE)
+    buttons = ButtonPoller(cad)
     while True:
-        if cad.switches[0].value == 1:
+        pressed_button = buttons.poll()
+        if pressed_button is not False and pressed_button < len(all_hosts):
             with display_manager():
-                values = SysValues(**poll_pi('localhost'))
-                text = format_values('localhost', values)
+                host = all_hosts[pressed_button]
+                values = SysValues(**poll_pi(host))
+                text = format_values(host, values)
                 cad.lcd.write(text)
+        time.sleep(1)
 
 if __name__ == '__main__':
     main()
