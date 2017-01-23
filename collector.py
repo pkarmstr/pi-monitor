@@ -6,7 +6,7 @@ SysValues = namedtuple(
 )
 
 def collect():
-    cpu = cpu_percent(percpu=True)
+    cpu = cpu_percent()
     disk = disk_usage("/").percent
     mem = virtual_memory().percent
     return SysValues(cpu, disk, mem)

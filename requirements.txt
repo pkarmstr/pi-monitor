@@ -1,2 +1,5 @@
 psutil==5.0.1
 simplejson==3.10.0
+pifacecad==2.0.8
+pifacecommon==4.2.1
+requests==2.4.3
