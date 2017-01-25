@@ -14,8 +14,8 @@ def get_hosts(f):
     with open(f, 'r') as hosts_file:
         return [line.rstrip() for line in hosts_file]
 
-def format_values(hostname, values):
-    if len(values) > 0:
+def format_values(hostname, values=None):
+    if values is not None:
         return '{}: cpu={}%\ndisk={}%, ram={}%'.format(
                 hostname, *values)
     else:
@@ -42,8 +42,10 @@ def main():
         if pressed_button is not False and pressed_button < len(all_hosts):
             with display_manager():
                 host = all_hosts[pressed_button]
-                values = SysValues(**poll_pi(host))
-                text = format_values(host, values)
+                data = poll_pi(host)
+                if data is not None:
+                    data = SysValues(**data)
+                text = format_values(host, data)
                 cad.lcd.write(text)
         time.sleep(1)
 

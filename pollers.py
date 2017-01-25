@@ -5,10 +5,10 @@ POLL_PORT = 6649
 def poll_pi(hostname):
     try:
         resp = requests.get('http://{}:{}'.format(hostname, POLL_PORT))
-        return resp.json() if resp.status_code == 200 else {}
+        return resp.json() if resp.status_code == 200 else None
     except requests.exceptions.ConnectionError as e:
         print(e)
-        return {}
+        return None
 
 class ButtonPoller:
     def __init__(self, cad):
