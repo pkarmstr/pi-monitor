@@ -18,7 +18,7 @@ class SystemValuesRequestHandler(BaseHTTPRequestHandler):
         return
 
 def run():
-    server_addr = ('127.0.0.1', 6649)
+    server_addr = ('0.0.0.0', 6649)
     httpd = HTTPServer(server_addr, SystemValuesRequestHandler)
     httpd.serve_forever()
 
